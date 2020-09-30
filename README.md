@@ -10,7 +10,7 @@
 $ yarn install
 ```
 
-##ning the app
+## Running the app
 
 ```bash
 # development
