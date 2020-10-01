@@ -6,7 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const options = new DocumentBuilder()
-    .setTitle('Todo Example')
+    .setTitle('Todo Example...')
     .setDescription('The Todo API description')
     .setVersion('1.0')
     .addTag('dodo')
