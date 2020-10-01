@@ -19,7 +19,7 @@ node {
         sh 'yarn build'
       }
       stage('Restarting project') {
-        sh 'sudo su jenkins && yarn start:prod'
+        sh 'yarn start:prod'
       }
     }
    catch (err) {
