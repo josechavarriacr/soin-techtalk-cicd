@@ -19,7 +19,7 @@ node {
         sh 'yarn build'
       }
       stage('Restarting project') {
-        sh 'export BUILD_ID=dontKillMePlease && yarn start:prod'
+        sh 'BUILD_ID=dontKillMe yarn start:prod'
       }
     }
    catch (err) {
