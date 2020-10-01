@@ -15,6 +15,9 @@ node {
       stage('Applying End-To-End Test') {
         sh 'yarn test:e2e'
       }
+      stage('Running prebuild project') {
+        sh 'yarn prebuild'
+      }
       stage('Building project') {
         sh 'yarn build'
       }
