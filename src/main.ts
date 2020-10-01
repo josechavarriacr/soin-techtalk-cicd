@@ -9,7 +9,7 @@ async function bootstrap() {
     .setTitle('Todo Example...')
     .setDescription('The Todo API description')
     .setVersion('1.0')
-    .addTag('dodo')
+    .addTag('todo')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
