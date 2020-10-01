@@ -19,7 +19,7 @@ node {
         sh 'yarn build'
       }
       stage('Restarting project') {
-        sh 'yarn start:prod'
+        sh 'yarn pm2 kill && yarn start:prod'
       }
     }
    catch (err) {
