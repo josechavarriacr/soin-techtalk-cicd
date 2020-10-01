@@ -4,7 +4,7 @@ node {
         checkout scm
       }
       stage('Fetching the lastest code') {
-        sh 'git pull origin develop -f'
+        sh 'git pull origin master -f'
       }
       stage('Installing node_modules') {
         sh 'yarn install'
