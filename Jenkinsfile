@@ -1,4 +1,4 @@
-def server="ubuntu@ec2-52-55-21-45.compute-1.amazonaws.com"
+def server="ubuntu@ec2-54-159-216-10.compute-1.amazonaws.com"
 
 pipeline {
   agent any
