@@ -45,7 +45,7 @@ pipeline {
           agent any
           steps {
             sshagent(credentials : ['user-jenkins']) {
-              sh """ssh -o StrictHostKeyChecking=no $server cd /srv/node/soin-techtalk-cicd/ && git pull origin master -f && sh yarn build && sh yarn start:prod """
+              sh """ssh -o StrictHostKeyChecking=no $server cd /srv/node/soin-techtalk-cicd/ && git pull origin master -f && yarn build && yarn start:prod"""
             }
           }
         }
