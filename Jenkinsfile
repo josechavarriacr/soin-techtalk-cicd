@@ -12,7 +12,7 @@ pipeline {
     stage('Test') {
       agent {
           docker {
-              image 'node:10.16-alpine'
+              image 'node:10-alpine'
           }
       }
       stages {
