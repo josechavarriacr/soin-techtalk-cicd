@@ -45,7 +45,9 @@ pipeline {
           agent any
           steps {
             sshagent(credentials : ['user-jenkins']) {
-              sh """ssh -o StrictHostKeyChecking=no $server sh /srv/node/soin-techtalk-cicd/deploy.sh"""
+              sh """ssh -tt -o StrictHostKeyChecking=no $server << EOF 
+              sh /srv/node/soin-techtalk-cicd/deploy.sh && exit
+              EOF"""
             }
           }
         }
