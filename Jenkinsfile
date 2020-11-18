@@ -1,28 +1,78 @@
-node {
-   try {   
-     stage('Checkout') {
-        checkout scm
+def server="ubuntu@ec2-52-55-21-45.compute-1.amazonaws.com"
+
+pipeline {
+  agent any
+  stages {
+    stage('Notify') {
+      when { branch 'master' }
+        steps {
+          slackSend( channel: "#test-rafa", color: '#FFFF00', message: ":crossed_fingers::skin-tone-5: STARTED: Build ${env.JOB_NAME} [${env.BUILD_NUMBER}] (<${env.RUN_DISPLAY_URL}|Open>)")
+        }
       }
-      stage('Fetching the lastest code') {
-        sh 'git pull origin master -f'
+    stage('Test') {
+      agent {
+          docker {
+              image 'node:12-alpine'
+          }
       }
-      stage('Installing node_modules') {
-        sh 'yarn install'
-      }
-      stage('Applying Unit Test') {
-        sh 'yarn test'
-      }
-      stage('Applying End-To-End Test') {
-        sh 'yarn test:e2e'
-      }
-      stage('Building project') {
-        sh 'yarn build'
-      }
-      stage('Restarting project') {
-        sh 'yarn start:prod'
+      stages {
+        stage('Install') {
+          steps {
+            sh 'yarn install'
+          }
+        }
+        stage('Lint') {
+          steps {
+            sh 'yarn lint'
+          }
+        }
+        stage('Unit Test') {
+          steps {
+            sh 'yarn test'
+          }
+        }
+        stage('End-To-End Test') {
+          steps {
+            sh 'yarn test:e2e'
+          }
+        }
       }
     }
-   catch (err) {
-    throw err
+    stage('Deploying') {
+      when { branch 'master' }
+      stages {
+        stage('Build & Deploy') {
+          agent any
+          steps {
+            sshagent(credentials : ['user-jenkins']) {
+              sh """ssh -o StrictHostKeyChecking=no $server sh /srv/node/soin-techtalk-cicd/deploy.sh"""
+            }
+          }
+        }
+      }
+    }
   }
- }
+  post {
+    success {
+        script { 
+            if (env.BRANCH_NAME == 'master') {
+                slackSend( channel: "#test-rafa", color: '#00FF00', message: "<!here> :smiley: SUCCESSFUL: Build ${env.JOB_NAME} [${env.BUILD_NUMBER}] (${env.RUN_DISPLAY_URL})")
+            }
+        }
+    }
+    failure {
+        script { 
+            if (env.BRANCH_NAME == 'master') {
+                slackSend( channel: "#test-rafa", color: '#FF0000', message: "<!here> :scream: FAILED: Build ${env} [${env.BUILD_NUMBER}] (${env.RUN_DISPLAY_URL})")
+            }
+        }
+    }
+    unstable { 
+        script {
+            if (env.BRANCH_NAME == 'master') {
+                slackSend( channel: "#test-rafa", color: '#FF0000', message: "<!here> :grimacing: UNSTABLE: Build ${env} [${env.BUILD_NUMBER}] (${env.RUN_DISPLAY_URL})")
+            }
+        }
+    }
+  }
+}
