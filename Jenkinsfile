@@ -12,7 +12,7 @@ pipeline {
     stage('Test') {
       agent {
           docker {
-              image 'darkj24/node-gyp-compatible:1.0'
+              image 'node:10.16-alpine'
           }
       }
       stages {
