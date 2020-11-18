@@ -51,27 +51,5 @@ pipeline {
         }
     }
   }
-  post {
-        success {
-            script { 
-                if (env.BRANCH_NAME == 'master') {
-                    slackSend( channel: "#test-rafa", color: '#00FF00', message: "<!here> :smiley: SUCCESSFUL: Build ${env.JOB_NAME} [${env.BUILD_NUMBER}] (${env.RUN_DISPLAY_URL})")
-                }
-            }
-        }
-        failure {
-            script { 
-                if (env.BRANCH_NAME == 'master') {
-                    slackSend( channel: "#test-rafa", color: '#FF0000', message: "<!here> :scream: FAILED: Build ${env} [${env.BUILD_NUMBER}] (${env.RUN_DISPLAY_URL})")
-                }
-            }
-        }
-        unstable { 
-            script {
-                if (env.BRANCH_NAME == 'master') {
-                    slackSend( channel: "#test-rafa", color: '#FF0000', message: "<!here> :grimacing: UNSTABLE: Build ${env} [${env.BUILD_NUMBER}] (${env.RUN_DISPLAY_URL})")
-                }
-            }
-        }
-    }
+
 }
