@@ -26,12 +26,12 @@ pipeline {
             sh 'yarn lint'
           }
         }
-        stage('Applying Unit Test') {
+        stage('Unit Test') {
           steps {
             sh 'yarn test'
           }
         }
-        stage('Applying End-To-End Test') {
+        stage('End-To-End Test') {
           steps {
             sh 'yarn test:e2e'
           }
